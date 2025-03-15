@@ -42,7 +42,7 @@ class SparseConvReLU(nnq.SparseConv):
     def forward(self, input):
         msg = f"{input.features.shape[0]}, {input.features.shape[1]}, {self.weight().shape[0]}"
 
-        with tv.measure_and_print(f"QuantizedSparseConvReLU|{msg}", get_current_stream(), enable=False):
+        with tv.measure_and_print(f"QuantizedSparseConvReLU|{msg}", stream=get_current_stream(), enable=False):
 
             inp_scale = input.q_scale()
             w_scales = self.weight().q_per_channel_scales().to(torch.float32)
@@ -87,7 +87,7 @@ class SparseConvAddReLU(nnq.SparseConv):
 
     def forward(self, input, add_input: Optional[SparseConvTensor] = None):
         msg = f"{input.features.shape[0]}, {input.features.shape[1]}, {self.weight().shape[0]}"
-        with tv.measure_and_print(f"QuantizedSparseConvAddReLU|{msg}", get_current_stream(), enable=False):
+        with tv.measure_and_print(f"QuantizedSparseConvAddReLU|{msg}", stream=get_current_stream(), enable=False):
             inp_scale = input.q_scale()
             w_scales = self.weight().q_per_channel_scales().to(torch.float32)
             out_scale = self.scale 
